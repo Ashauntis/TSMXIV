@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import MarketboardCategory from './marketboard_category';
+import FetchData from '../data/FetchData.js'
 import SearchBar from './search_bar';
 import { useEffect } from 'react';
 
@@ -14,6 +15,7 @@ function MarketboardSidebar(){
   return (
     <div className="sidebar">
         <SearchBar />
+        <FetchData />
         <span>{data.value}</span>
     </div>
   );

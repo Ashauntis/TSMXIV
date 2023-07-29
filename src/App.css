@@ -1,46 +1,26 @@
-* {
-  margin: 0px;
-  padding: 0px;
-  font-family: 'Roboto', sans-serif;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-html {
-  background-color: #282c34;
-}
-
-header {
-  height: 10vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.App {
-  text-align: center;
-  min-height: calc(-80px + 100vh);
-  padding: 10px;
-}
-
-.search {
-  height: 24px;
-  padding-bottom: 10px;
-}
-
-#main_content {
-  width: 80%;
-  min-height: 90vh;
-  margin: 0px 0px 0px 20%;
-  color: green;
-}
-
-.App-header {
-  font-size: calc(10px + 2vmin);
-}
-
-.sidebar {
-  width: 20%;
-  float: left;
-  min-height: 90vh;
-  padding: 10px 0px;
-  border: 2px solid black;
-}
+@layer utilities {
+    .scrollbar::-webkit-scrollbar {
+      width: 20px;
+      height: 20px;
+    }
+  
+    .scrollbar::-webkit-scrollbar-track {
+      border-radius: 100vh;
+      background: #f7f4ed;
+    }
+  
+    .scrollbar::-webkit-scrollbar-thumb {
+      background: #e0cbcb;
+      border-radius: 100vh;
+      border: 3px solid #f6f7ed;
+    }
+  
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #c0a0b9;
+    }
+  }
+  

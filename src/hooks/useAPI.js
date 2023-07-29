@@ -10,45 +10,71 @@ function useAPI(server, id, setLoading, source) {
     const items = useSelector((state) => state.data.items);
 
     const fetcher = async (server, id, setLoading) => {
+        const url = `http://localhost:3001/api/recipes/?id=${id}`;
 
-        // if we have already started a fetch for this id don't do it again...
-        if (started_ids.includes(id)) {
+        // first check to see if the item is already pending an update
+        if (items[id] && items[id].pending) {
             console.log(`Waiting for prior fetch of id: ${id}`);
             while (true) {
-                if (checked_ids.includes(id)) {
-                    console.log(`Finished waiting for prior fetch of id: ${id}`);
+                if (items[id] && !items[id].pending) {
+                    // set loading to false so we can render the item
                     setLoading(false);
-                    return;
                 }
-                // console.log(`Waiting for ${id} to finish...`)
-                await new Promise((r) => setTimeout(r, 100));
             }
-
         } else {
-            started_ids.push(id);
-
-            console.log(
-                `Connecting to express backend from ${source} with id: ${id} and server: ${server}`
-            );
-        
-            dispatch(
-                set_items({
-                    [id]: { time: Date.now() },
-                })
-            );
-
-            const url = `http://localhost:3001/api/recipes/?id=${id}`;
+            // set a pending marker on our item object even if it doesn't exist yet
+            dispatch(set_items({ [id]: { pending: true } }));
+            // and start the api call
             const response = await fetch(url);
             const jsonData = await response.json();
             jsonData.time = Date.now();
-
-            // set the data in the store with a key of id
-            dispatch(set_items({ [id]: jsonData }));
+            // set the data in the store with a key of id, and remove the pending marker
+            dispatch(set_items({ [id]: { ...jsonData, pending: false } }));
+            // set loading to false so we can render the item
             setLoading(false);
-
-            checked_ids.push(id);
-
         }
+
+
+
+
+        // if we have already started a fetch for this id don't do it again...
+        // if (started_ids.includes(id)) {
+        //     console.log(`Waiting for prior fetch of id: ${id}`);
+        //     while (true) {
+        //         if (checked_ids.includes(id)) {
+        //             console.log(`Finished waiting for prior fetch of id: ${id}`);
+        //             setLoading(false);
+        //             return;
+        //         }
+        //         // console.log(`Waiting for ${id} to finish...`)
+        //         await new Promise((r) => setTimeout(r, 100));
+        //     }
+
+        // } else {
+        //     started_ids.push(id);
+
+        //     console.log(
+        //         `Connecting to express backend from ${source} with id: ${id} and server: ${server}`
+        //     );
+        
+        //     dispatch(
+        //         set_items({
+        //             [id]: { time: Date.now() },
+        //         })
+        //     );
+
+        //     const url = `http://localhost:3001/api/recipes/?id=${id}`;
+        //     const response = await fetch(url);
+        //     const jsonData = await response.json();
+        //     jsonData.time = Date.now();
+
+        //     // set the data in the store with a key of id
+        //     dispatch(set_items({ [id]: jsonData }));
+        //     setLoading(false);
+
+        //     checked_ids.push(id);
+
+        // }
     };
 
     useEffect(() => {

@@ -1,6 +1,6 @@
 import './App.css';
-import MarketboardSidebar from './components/marketboard_sidebar';
-import Header from './components/header';
+import MarketboardSidebar from './components/marketboard/MarketboardSidebar';
+import Header from './components/Header';
 import ItemCard from './components/items/ItemCard';
 
 function App() {
